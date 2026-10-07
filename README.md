@@ -2,48 +2,59 @@
 
 **A Representation-Invariance Audit for OpenAPI SDK Generation**
 
-Replication repository for the empirical software engineering study by **Huynh Anh Khiem** (Faculty of Information Technology, Ton Duc Thang University, Ho Chi Minh City, Vietnam).
+Research replication materials for the manuscript submitted to *Empirical Software Engineering*.
 
-## Study at a glance
+**Author:** Huynh Anh Khiem · Faculty of Information Technology, Ton Duc Thang University, Ho Chi Minh City, Vietnam · [ORCID 0009-0007-7210-174X](https://orcid.org/0009-0007-7210-174X)
 
-This study investigates whether changes in the representation order of otherwise equivalent OpenAPI contracts alter generated SDK declarations. The evaluated targets are OpenAPI Generator **7.25.0** and **7.22.0**, using Python and TypeScript Fetch client backends.
+## Data and code availability
 
-- Main benchmark: **40 pinned OpenAPI contracts**, 6 variants per contract and 2 language targets (**480 clean generations** on 7.25.0).
-- Primary finding: reversing the `paths` mapping changes the normalized public-declaration projection for **10/40 contract instances** on both targets; the same affected set recurs on 7.22.0.
-- Sensitivity checks: **8/36** affected contracts after excluding four cases flagged for ambiguous template-template path matching; **7/35** affected contract families after also collapsing one near-duplicate pair.
-- Engineering checks: `SORT_MODEL_PROPERTIES`, official `openapi-yaml sortOutput` preprocessing, explicit-title repair, and pre-resolution canonical mapping sorting.
-- A reduced TypeScript example demonstrates an unchanged-consumer compilation failure under one ordering.
+**[Download ESM_1.zip](./ESM_1.zip)** — the complete publicly accessible replication archive, including Python and JavaScript source code, input contracts and transformations, result tables, validation programs, and human-readable projection evidence.
 
-**Interpretation:** the primary outcome is drift in a specific *generated-source declaration projection*. It is **not** a claim that every drift changes runtime behavior or that the observed fractions estimate population prevalence. The 40 specifications constitute a fixed, non-probability benchmark.
+Archive SHA-256:
+```text
+37d7137df1bb5e85c7e29ef127df2c4e71a2e24af2a1a92a80805b1363dc60cb
+```
 
-## Replication materials
+This is the **same file** submitted as electronic supplementary material (`ESM_1.zip`). The archive preserves the intended nested directories; do **not** upload its individual members separately to Editorial Manager. The repository holds the archive as one file to avoid repeated basenames such as `projection.diff` being mistaken for duplicates.
 
-The versioned supplementary archive **`ESM_1.zip`** contains the pinned input manifest, contract variants, main result tables, whole-project tree hashes, projection JSON/diffs, sensitivity analyses, scripts, and provenance notes. GitHub can preserve this archive as a single file; **do not extract its hundreds of files into the browser's multi-file upload dialog**.
+### Archive contents
 
-> **Availability status:** The repository's documentation is initialized; the `ESM_1.zip` replication archive still needs to be uploaded. Do not cite this repository as a complete public data deposit until that file appears.
+| Path inside `ESM_1.zip` | Description |
+| --- | --- |
+| `scripts/` | Python/JavaScript audit, regeneration, extraction, and checking code |
+| `data/` | Pinned 40-contract benchmark, 240 transformed representation files, and manifests |
+| `results/` | Clean 7.25.0 and 7.22.0 results, tree/projection hashes, screens, interventions, and reduced compiler evidence |
+| `results/projection_evidence/` | Human-readable JSON and unified differences for 20 drift contract–backend pairs |
+| `evidence/` | Methodological, prior-art, and engineering provenance notes |
+| `README.txt`, `TOOL_VERSIONS.txt` | Full replication instructions and pinned tool versions |
 
-After downloading `ESM_1.zip`, extract it to a working directory to inspect or rerun the study:
+## Reproduce and verify
+
+Requirements: Python, Java (OpenJDK 21 used in the study), and Node.js/npm for TypeScript-related experiments. The original verification environment used Python 3.13.5 and TypeScript 5.8.3.
 
 ```bash
+git clone https://github.com/huynhanhkhiem-dms/openapi-sdk-representation-invariance.git
+cd openapi-sdk-representation-invariance
 unzip ESM_1.zip -d replication
 cd replication
+
 python -m pip install -r requirements.txt
 npm install
 python scripts/verify_results.py
 ```
 
-The last command performs **consistency and provenance checks of included evidence**; it does not independently rebuild all generated SDKs.
+The final command checks **consistency and selected provenance properties of the published evidence**; it does not independently regenerate all SDK trees. For full regeneration, consult `replication/README.txt`, obtain the official OpenAPI Generator CLI JARs for 7.25.0 and 7.22.0, verify their hashes in `replication/TOOL_VERSIONS.txt`, and place the binaries under `replication/tools/`. Third-party JARs and generated SDK directories are not included.
 
-For full regeneration, install Java and download OpenAPI Generator CLI **7.25.0** and **7.22.0** from the official distribution. Verify their exact SHA-256 hashes against `TOOL_VERSIONS.txt`, place the JARs in `tools/`, and follow the commands in `README.txt` inside the archive. Third-party JARs and generated SDK trees are not redistributed.
+## Main empirical findings
 
-## Reuse and provenance
+The fixed benchmark contains **40 pinned OpenAPI contracts**. The 7.25.0 main analysis includes **480 clean SDK generations** (40 contracts × 6 representations × 2 client targets). A reversal of the `paths` mapping changes the normalized public-declaration projection in **10/40 contract instances**, with the same affected set for Python and TypeScript Fetch and the pinned 7.22.0 replication.
 
-The OpenAPI contracts originate from third parties and retain their own attribution and applicable licenses. Publication of this repository is **not** a blanket relicensing of those contracts. Consult source records and individual upstream terms before redistribution or reuse. No repository-wide license has been asserted for third-party materials.
+Sensitivity analyses retain **8/36** affected contract instances after excluding four specifications with potentially ambiguous template–template route matching and **7/35** affected contract families after also collapsing one near-duplicate pair. On the ten drift cases, the official `openapi-yaml sortOutput` control does not eliminate the observed resolved-content differences; `SORT_MODEL_PROPERTIES` does not remove path-order projection drift. A reduced explicit-title intervention stabilizes the tested naming witness but itself requires migration consideration.
 
-## Citation
+**Outcome definition:** `PROJECTION_INVARIANT` means equality of the study's selected public-declaration projection, **not** byte-identical SDK outputs or guaranteed runtime compatibility. The corpus is a fixed, non-probability benchmark and its fractions are not population prevalence estimates.
 
-Please cite the journal article when bibliographic details become available. Until then, refer to this repository using its URL and a specific Git commit or release tag.
+## Third-party materials and citation
 
-**Manuscript:** *When Contract Order Becomes API: A Representation-Invariance Audit for OpenAPI SDK Generation*  
-**Corresponding author:** Huynh Anh Khiem  
-**ORCID:** [0009-0007-7210-174X](https://orcid.org/0009-0007-7210-174X)
+The input OpenAPI contracts come from the [APIs.guru OpenAPI Directory](https://github.com/APIs-guru/openapi-directory), pinned to commit `f04b8d0bcd39c52e1cf3ad7a5fe744709832ae49`. Upstream ownership, notices, and applicable rights should be respected; no blanket license covering third-party contracts is asserted here.
+
+The corresponding manuscript is titled **“When Contract Order Becomes API: A Representation-Invariance Audit for OpenAPI SDK Generation.”** Until journal bibliographic details exist, cite this repository using a specific commit and the archive checksum above.
